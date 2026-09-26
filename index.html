@@ -6,20 +6,21 @@
 <title>Christmas Countdown</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --pine: #0b3d24;
-    --pine-deep: #041b10;
-    --red: #c0392b;
-    --gold: #e8c15a;
-    --snow: #fefefe;
+    --holly-green: #17a04a;
+    --berry-red: #e6323a;
+    --red: #ef4444;
+    --green: #22c55e;
+    --gold: #ffd23f;
+    --snow: #ffffff;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
     height: 100%;
-    background: radial-gradient(ellipse at top, var(--pine) 0%, var(--pine-deep) 75%);
+    background: linear-gradient(160deg, var(--berry-red) 0%, var(--holly-green) 55%, #0e7a37 100%);
     overflow: hidden;
     font-family: 'Inter', sans-serif;
   }
@@ -42,58 +43,77 @@
     text-align: center;
     padding: 24px;
   }
-  .tree {
-    font-size: clamp(48px, 8vw, 84px);
+  .emoji-row {
+    font-size: clamp(40px, 7vw, 68px);
     margin-bottom: 8px;
-    filter: drop-shadow(0 0 18px rgba(232, 193, 90, 0.55));
+    display: flex;
+    gap: 12px;
+  }
+  .emoji-row span {
+    display: inline-block;
+    animation: bounce 1.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 14px rgba(255, 210, 63, 0.6));
+  }
+  .emoji-row span:nth-child(2) { animation-delay: 0.2s; }
+  .emoji-row span:nth-child(3) { animation-delay: 0.4s; }
+  .emoji-row span:nth-child(4) { animation-delay: 0.6s; }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-16px) rotate(-6deg); }
   }
   h1 {
-    font-family: 'Mountains of Christmas', cursive;
-    font-weight: 700;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
     color: var(--gold);
-    font-size: clamp(34px, 7vw, 62px);
+    font-size: clamp(32px, 7vw, 58px);
     margin: 0 0 6px 0;
     letter-spacing: 0.5px;
+    text-shadow: 0 3px 0 var(--red);
   }
   .subtitle {
     color: var(--snow);
-    opacity: 0.8;
-    font-size: clamp(13px, 2vw, 16px);
+    opacity: 0.95;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 600;
+    font-size: clamp(15px, 2.4vw, 20px);
     margin-bottom: 36px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    letter-spacing: 1px;
   }
   .countdown {
     display: flex;
-    gap: clamp(12px, 3vw, 28px);
+    gap: clamp(12px, 3vw, 24px);
     flex-wrap: wrap;
     justify-content: center;
   }
   .unit {
-    background: rgba(232, 193, 90, 0.08);
-    border: 1px solid rgba(232, 193, 90, 0.4);
-    border-radius: 16px;
-    padding: clamp(14px, 3vw, 24px) clamp(16px, 3.5vw, 28px);
-    min-width: 88px;
-    backdrop-filter: blur(4px);
+    background: var(--red);
+    border: 4px solid var(--snow);
+    border-radius: 20px;
+    padding: clamp(14px, 3vw, 22px) clamp(14px, 3vw, 24px);
+    min-width: 84px;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+  }
+  .unit:nth-child(even) {
+    background: var(--green);
   }
   .unit .value {
-    font-family: 'Mountains of Christmas', cursive;
-    font-weight: 700;
-    font-size: clamp(36px, 7.5vw, 64px);
-    color: var(--gold);
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: clamp(32px, 7vw, 56px);
+    color: var(--snow);
     line-height: 1;
   }
   .unit .label {
     margin-top: 8px;
-    font-size: clamp(10px, 1.6vw, 13px);
+    font-family: 'Baloo 2', cursive;
+    font-weight: 600;
+    font-size: clamp(11px, 1.8vw, 14px);
     color: var(--snow);
-    opacity: 0.7;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     text-transform: uppercase;
   }
   .done {
-    font-family: 'Mountains of Christmas', cursive;
+    font-family: 'Baloo 2', cursive;
     color: var(--gold);
     font-size: clamp(28px, 6vw, 46px);
   }
@@ -102,9 +122,11 @@
 <body>
 <canvas id="snow-canvas"></canvas>
 <div class="stage">
-  <div class="tree">🎄</div>
-  <h1>Christmas Countdown</h1>
-  <div class="subtitle">Friday, December 25, 2026</div>
+  <div class="emoji-row">
+    <span>🎄</span><span>🎅</span><span>🎁</span><span>⭐</span>
+  </div>
+  <h1>Christmas Countdown!</h1>
+  <div class="subtitle">🎉 Santa comes on Friday, December 25, 2026! 🎉</div>
   <div id="countdown" class="countdown"></div>
 </div>
 
@@ -117,7 +139,7 @@
     const diff = targetDate - now;
 
     if (diff <= 0) {
-      countdownEl.innerHTML = '<div class="done">🎅 Merry Christmas! 🎅</div>';
+      countdownEl.innerHTML = '<div class="done">🎅🎄 Merry Christmas!! 🎄🎅</div>';
       return;
     }
 
@@ -156,31 +178,51 @@
   window.addEventListener("resize", resize);
   resize();
 
+  const flakeColors = ["#ffffff", "#ffd23f", "#7dd3fc"];
+
   function makeFlake() {
     return {
       x: Math.random() * canvas.width,
       y: Math.random() * -canvas.height,
-      radius: Math.random() * 2.5 + 1,
-      speed: Math.random() * 1 + 0.4,
+      radius: Math.random() * 4 + 3,
+      speed: Math.random() * 1 + 0.5,
       drift: Math.random() * 0.6 - 0.3,
       sway: Math.random() * Math.PI * 2,
       swaySpeed: Math.random() * 0.02 + 0.005,
+      spin: Math.random() * Math.PI * 2,
+      spinSpeed: Math.random() * 0.05 - 0.025,
+      color: flakeColors[Math.floor(Math.random() * flakeColors.length)],
     };
   }
 
-  const FLAKE_COUNT = 130;
+  const FLAKE_COUNT = 100;
   for (let i = 0; i < FLAKE_COUNT; i++) flakes.push(makeFlake());
+
+  function drawSnowflake(x, y, radius, angle, color) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = Math.max(1, radius / 4);
+    ctx.lineCap = "round";
+    for (let i = 0; i < 3; i++) {
+      ctx.rotate(Math.PI / 3);
+      ctx.beginPath();
+      ctx.moveTo(-radius, 0);
+      ctx.lineTo(radius, 0);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "rgba(254, 254, 254, 0.9)";
     for (const f of flakes) {
-      ctx.beginPath();
-      ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
-      ctx.fill();
+      drawSnowflake(f.x, f.y, f.radius, f.spin, f.color);
 
       f.y += f.speed;
       f.sway += f.swaySpeed;
+      f.spin += f.spinSpeed;
       f.x += f.drift + Math.sin(f.sway) * 0.3;
 
       if (f.y > canvas.height + 5) {
